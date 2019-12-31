@@ -1,0 +1,136 @@
+{% extends "base2.html" %}
+{% load static %}
+{% static "images" as baseUrl %}
+
+{% block script %}
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="description" content="Sublime project">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" type="text/css" href="{% static 'styles/bootstrap4/bootstrap.min.css' %}">
+	<link href="{% static 'plugins/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'plugins/OwlCarousel2-2.2.1/owl.carousel.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'plugins/OwlCarousel2-2.2.1/owl.theme.default.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'plugins/OwlCarousel2-2.2.1/animate.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'styles/categories.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'styles/categories_responsive.css' %}">
+{% endblock script %}
+
+{% block content %}
+	<!-- Products -->
+
+	<div class="products">
+		<div class="container">
+
+			<div class="row">
+				<div class="col">
+
+					<br><br><br><br><br><br><br><br>
+<!--					<div class="sorting_bar d-flex flex-md-row flex-column align-items-md-center justify-content-md-start">-->
+<!--						<div class="results"><span></span></div>-->
+<!--						<div class="sorting_container ml-md-auto">-->
+<!--							<div class="sorting">-->
+<!--								<ul class="item_sorting">-->
+<!--									<li>-->
+<!--										<span class="sorting_text">Sort by Price</span>-->
+<!--										<i class="fa fa-chevron-down" aria-hidden="true"></i>-->
+<!--										<ul>-->
+<!--&lt;!&ndash;											<li class="product_sorting_btn" data-isotope-option='{ "sortBy": "original-order" }'><span>Default</span></li>&ndash;&gt;-->
+<!--											<li class="product_sorting_btn" data-isotope-option='{ "sortBy": "low" }'><a href="{% url 'low' %}"> <span>Low to High</span></a></li>-->
+<!--											<li class="product_sorting_btn" data-isotope-option='{ "sortBy": "high" }'><a href="{% url 'high' %}"> <span>High to Low</span></a></li>-->
+<!--										</ul>-->
+<!--									</li>-->
+<!--								</ul>-->
+<!--							</div>-->
+<!--						</div>-->
+<!--					</div>-->
+
+				</div>
+			</div>
+			<div class="row">
+				<div class="col">
+					<div class="product_grid">
+                        {% for item in object_list %}
+                        <div class="product">
+                            <div class="product_image"><a href ="{% url 'product' item.slug %}"><img src="{{ item.book_img.url }}" alt="" height="230" width="180"></a></div>
+                            {% if item.new %}
+								<div class="product_extra product_new"><a href="product">New</a></div>
+                            {% endif %}
+                            {% if item.hot %}
+								<div class="product_extra product_new"><a href="product">Hot</a></div>
+                            {% endif %}
+								<div class="product_content">
+									<div class="product_title"><h6>{{ item.title }} </h6></div>
+									<div class="product_price"><h6>Price: {{ item.price }}</h6></div>
+								</div>
+						</div>
+						{% endfor %}
+						</div>
+
+
+					</div>
+					<div class="product_pagination">
+						<div style="display: flex; justify-content: flex-end">
+							<span class="step-links">
+								{% if item.has_previous %}
+									<a href="?page=1"> First &nbsp; </a>
+								<a href="?page={{ item.previous_page_number }}"> &laquo; Prev &nbsp; </a>
+								{% endif %}
+
+								<span class="current">
+									Page {{ item.number }} of {{ item.paginator.num_pages }} &nbsp;
+								</span>
+
+								{% if item.has_next %}
+									<a href="?page={{ item.next_page_number }}"> Next &nbsp;</a>
+									<a href="?page={{ item.paginator.num_pages }}"> Last &raquo;</a>
+								{% endif %}
+							</span>
+						</div>
+					<div><br><br></div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+
+	<!-- Footer -->
+
+	<div class="footer_overlay"></div>
+	<footer class="footer">
+		<div class="footer_background" style="background-image:url('/static/images/footer.jpg')"></div>
+		<div class="container">
+			<div class="row">
+				<div class="col">
+					<div class="footer_content d-flex flex-lg-row flex-column align-items-center justify-content-lg-start justify-content-center">
+						<div class="footer_logo"><a href="#"></a></div>
+
+						<div class="footer_social ml-lg-auto">
+							<ul>
+								<li><a href="#"><i class="fa fa-pinterest" aria-hidden="true"></i></a></li>
+								<li><a href="#"><i class="fa fa-instagram" aria-hidden="true"></i></a></li>
+								<li><a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
+								<li><a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</footer>
+
+{% endblock content %}
+{% block script2 %}
+	<script src="{% static 'js/jquery-3.2.1.min.js' %}"></script>
+	<script src="{% static 'styles/bootstrap4/popper.js' %}"></script>
+	<script src="{% static 'styles/bootstrap4/bootstrap.min.js' %}"></script>
+	<script src="{% static 'plugins/greensock/TweenMax.min.js' %}"></script>
+	<script src="{% static 'plugins/greensock/TimelineMax.min.js' %}"></script>
+	<script src="{% static 'plugins/scrollmagic/ScrollMagic.min.js' %}"></script>
+	<script src="{% static 'plugins/greensock/animation.gsap.min.js' %}"></script>
+	<script src="{% static 'plugins/greensock/ScrollToPlugin.min.js' %}"></script>
+	<script src="{% static 'plugins/OwlCarousel2-2.2.1/owl.carousel.js' %}"></script>
+	<script src="{% static 'plugins/Isotope/isotope.pkgd.min.js' %}"></script>
+	<script src="{% static 'plugins/easing/easing.js' %}"></script>
+	<script src="{% static 'plugins/parallax-js-master/parallax.min.js' %}"></script>
+	<script src="{% static 'js/categories.js' %}"></script>
+{% endblock script2 %}

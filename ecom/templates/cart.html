@@ -1,0 +1,156 @@
+{% extends "base2.html" %}
+	{% load static %}
+	{% static "images" as baseUrl %}
+
+{% block script %}
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="description" content="Sublime project">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" type="text/css" href="{% static 'styles/bootstrap4/bootstrap.min.css' %}">
+	<link href="{% static 'plugins/font-awesome-4.7.0/css/font-awesome.min.css' %}" rel="stylesheet" type="text/css">
+	<link rel="stylesheet" type="text/css" href="{% static 'styles/cart.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'styles/cart_responsive.css' %}">
+{% endblock script %}
+
+
+{% block content %}
+	<!-- Home -->
+	<div class="home">
+		<div class="home_container">
+			<div class="home_background" style="background-image:url('/static/images/library.jpg')"></div>
+			<div class="home_content_container">
+				<div class="container">
+					<div class="row">
+						<div class="col">
+							<div class="home_content">
+								<div class="breadcrumbs">
+									<ul>
+										<li><a href="{% url 'home' %}">Home</a></li>
+										<li><a href="{% url 'books' %}">Books</a></li>
+										<li><a href = "{% url 'cart' %}">Shopping Cart</a></li>
+									</ul>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	{% if empty %}
+		<br><br><br>
+		<h2 style='text-align:center'>{{ empty_msg }}</h2>
+	{% else %}
+		<!-- Cart Info -->
+		<div class="cart_info">
+			<div class="container">
+
+				<div class="row">
+					<div class="col">
+						<!-- Column Titles -->
+						<div class="cart_info_columns clearfix">
+							<div class="cart_info_col cart_info_col_product"><h4>Products</h4></div>
+							<div class="cart_info_col cart_info_col_price"><h4>Price</h4></div>
+							<div class="cart_info_col cart_info_col_quantity"><h4>Quantity</h4></div>
+							<div class="cart_info_col cart_info_col_total"><h4>Total</h4></div>
+						</div>
+					</div>
+				</div>
+				{% for item in cart.cartitem_set.all %}
+					<div class="row cart_items_row">
+					<div class="col">
+
+						<!-- Cart Item -->
+						<div class="cart_item d-flex flex-lg-row flex-column align-items-lg-center align-items-start justify-content-start">
+							<!-- Name -->
+							<div class="cart_item_product d-flex flex-row align-items-center justify-content-start">
+								<div class="cart_item_image">
+									<div><img src="{{ item.product.book_img.url }}" alt="" height="200" width="180"></div>
+								</div>
+								<div class="cart_item_name_container">
+									<div class="cart_item_name"><a href="{% url 'product' item.product.slug %}">{{ item.product }}</a></div>
+                                    <div class="cart_item_edit"><a href="{% url 'removefromcart' item.id %}"><h5><b><font color="red"> Remove</font></b></font></h5></a></div>
+                                </div>
+							</div>
+							<!-- Price -->
+							<div class="cart_item_price"><h4>{{ item.product.price }}</h4></div>
+							<!-- Quantity -->
+							<div class="cart_item_quantity">
+								<div class="product_quantity_container">
+									<div class="product_quantity clearfix">
+<!--										<span>{{ item.quantity }}</span>-->
+										<form method="GET" action="{% url 'updatecart' item.product.slug %}">
+											<input name="qty" class="button cart_button" align="left" type="number" min="1" max="5" value= {{ item.quantity }} >
+											<input type="submit" value=">>"><a href="{% url 'updatecart' item.product.slug %}?qty"></a>
+										</form>
+
+									</div>
+								</div>
+							</div>
+							<!-- Total -->
+<!--							<div class="cart_item_total"> <h4> &#8377; {{ item.total }}</h4></div>-->
+							<div class="cart_item_total"> <h4> &#8377; {{ item.line_total }} </h4></div>
+
+						</div>
+					</div>
+				</div>
+					<br><br>
+				{% endfor %}
+
+				<div class="row row_cart_buttons">
+					<div class="col">
+						<div class="cart_buttons d-flex flex-lg-row flex-column align-items-start justify-content-start"><br><br>
+							<div class="button continue_shopping_button"><a href="{% url 'books' %}">Continue shopping</a></div>
+<!--							<div class="cart_buttons_right ml-lg-auto">-->
+<!--								<div class="button clear_cart_button"><a href="#">Clear cart</a></div>-->
+<!--								<div class="button update_cart_button"><a href="#">Update cart</a></div>-->
+<!--							</div>-->
+						</div>
+					</div>
+				</div>
+				<div class="row row_extra">
+					<div class="col-lg-6 offset-lg-3">
+						<div class="cart_total">
+							<div class="section_title">Cart total</div>
+							<div class="cart_total_container">
+
+								<ul>
+									<li class="d-flex flex-row align-items-center justify-content-start">
+										<div class="cart_total_title">Total</div>
+										<div class="cart_total_value ml-auto">&#8377; <b>{{ cart.total }}</b></div>
+
+									</li>
+								</ul>
+
+							</div>
+							<div class="button checkout_button"><a href="{% url 'checkout' %}">Proceed to checkout</a></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	{% endif %}
+
+{% endblock %}
+
+
+{% block script2 %}
+	<script src="{% static 'js/jquery-3.2.1.min.js' %}"></script>
+    <script src="{% static 'styles/bootstrap4/popper.js' %}"></script>
+    <script src="{% static 'styles/bootstrap4/bootstrap.min.js' %}"></script>
+    <script src="{% static 'plugins/greensock/TweenMax.min.js' %}"></script>
+    <script src="{% static 'plugins/greensock/TimelineMax.min.js' %}"></script>
+    <script src="{% static 'plugins/scrollmagic/ScrollMagic.min.js' %}"></script>
+    <script src="{% static 'plugins/greensock/animation.gsap.min.js' %}"></script>
+    <script src="{% static 'plugins/greensock/ScrollToPlugin.min.js' %}"></script>
+    <script src="{% static 'plugins/OwlCarousel2-2.2.1/owl.carousel.js' %}"></script>
+    <script src="{% static 'plugins/Isotope/isotope.pkgd.min.js' %}"></script>
+    <script src="{% static 'plugins/easing/easing.js' %}"></script>
+    <script src="{% static 'plugins/OwlCarousel2-2.2.1/owl.carousel.js' %}"></script>
+    <script src="{% static 'plugins/Isotope/isotope.pkgd.min.js' %}"></script>
+    <script src="{% static 'plugins/parallax-js-master/parallax.min.js' %}"></script>
+    <script src="{% static 'js/custom.js' %}"></script>
+{% endblock script2 %}
+
